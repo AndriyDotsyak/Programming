@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Programming</string>
+
+    <string name="btn_java_text">Java</string>
+    <string name="btn_c_text">C# / .NET</string>
+    <string name="btn_web_text">Web</string>
+
+    <string name="txt_java">Java — сильно типизированный объектно-ориентированный язык программирования, разработанный компанией Sun Microsystems.</string>
+    <string name="txt_android">Android Studio — это интегрированная среда разработки (IDE) для работы с платформой Android, анонсированная 16 мая 2013 года на конференции Google I/O.</string>
+</resources>
