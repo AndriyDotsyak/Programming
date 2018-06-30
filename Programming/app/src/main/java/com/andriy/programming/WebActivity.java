@@ -5,8 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 import butterknife.BindView;
@@ -18,6 +20,9 @@ public class WebActivity extends AppCompatActivity {
     @BindView(R.id.adView)
     AdView adView;
 
+    private InterstitialAd mInterstitialAd;
+    private Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,40 +33,68 @@ public class WebActivity extends AppCompatActivity {
 
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                startActivity(intent);
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            }
+
+        });
     }
 
     @OnClick({R.id.btn_guide_node, R.id.btn_guide_javascript, R.id.btn_guide_webgl, R.id.btn_guide_php})
     void onSaveClick(View view) {
-        Intent intent;
-
         switch (view.getId()) {
             case R.id.btn_guide_node:
-                intent = new Intent("android.intent.guide");
-                intent.putExtra("imageGuide", R.drawable.node);
-                intent.putExtra("txtGuide", R.string.txt_node);
-                startActivity(intent);
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                    intentData(R.drawable.node, R.string.txt_node);
+                } else {
+                    intentData(R.drawable.node, R.string.txt_node);
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.btn_guide_javascript:
-                intent = new Intent("android.intent.guide");
-                intent.putExtra("imageGuide", R.drawable.javascript);
-                intent.putExtra("txtGuide", R.string.txt_javascript);
-                startActivity(intent);
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                    intentData(R.drawable.javascript, R.string.txt_javascript);
+                } else {
+                    intentData(R.drawable.javascript, R.string.txt_javascript);
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.btn_guide_webgl:
-                intent = new Intent("android.intent.guide");
-                intent.putExtra("imageGuide", R.drawable.webgl);
-                intent.putExtra("txtGuide", R.string.txt_webgl);
-                startActivity(intent);
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                    intentData(R.drawable.webgl, R.string.txt_webgl);
+                } else {
+                    intentData(R.drawable.webgl, R.string.txt_webgl);
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.btn_guide_php:
-                intent = new Intent("android.intent.guide");
-                intent.putExtra("imageGuide", R.drawable.php);
-                intent.putExtra("txtGuide", R.string.txt_php);
-                startActivity(intent);
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                    intentData(R.drawable.php, R.string.txt_php);
+                } else {
+                    intentData(R.drawable.php, R.string.txt_php);
+                    startActivity(intent);
+                }
                 break;
         }
+    }
+
+    private void intentData(int image, int txt) {
+        intent = new Intent("android.intent.guide");
+        intent.putExtra("imageGuide", image);
+        intent.putExtra("txtGuide", txt);
     }
 }

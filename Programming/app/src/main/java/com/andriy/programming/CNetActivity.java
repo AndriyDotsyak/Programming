@@ -5,8 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 import butterknife.BindView;
@@ -18,6 +20,9 @@ public class CNetActivity extends AppCompatActivity {
     @BindView(R.id.adView)
     AdView adView;
 
+    private InterstitialAd mInterstitialAd;
+    private Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,33 +33,58 @@ public class CNetActivity extends AppCompatActivity {
 
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                startActivity(intent);
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            }
+
+        });
     }
 
     @OnClick({R.id.btn_guide_c, R.id.btn_guide_net, R.id.btn_guide_xamarin})
     void onSaveClick(View view) {
-        Intent intent;
-
         switch (view.getId()) {
             case R.id.btn_guide_c:
-                intent = new Intent("android.intent.guide");
-                intent.putExtra("imageGuide", R.drawable.c);
-                intent.putExtra("txtGuide", R.string.txt_c);
-                startActivity(intent);
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                    intentData(R.drawable.c, R.string.txt_c);
+                } else {
+                    intentData(R.drawable.c, R.string.txt_c);
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.btn_guide_net:
-                intent = new Intent("android.intent.guide");
-                intent.putExtra("imageGuide", R.drawable.net);
-                intent.putExtra("txtGuide", R.string.txt_net);
-                startActivity(intent);
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                    intentData(R.drawable.net, R.string.txt_net);
+                } else {
+                    intentData(R.drawable.net, R.string.txt_net);
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.btn_guide_xamarin:
-                intent = new Intent("android.intent.guide");
-                intent.putExtra("imageGuide", R.drawable.xamarin);
-                intent.putExtra("txtGuide", R.string.txt_xamarin);
-                startActivity(intent);
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                    intentData(R.drawable.xamarin, R.string.txt_xamarin);
+                } else {
+                    intentData(R.drawable.xamarin, R.string.txt_xamarin);
+                    startActivity(intent);
+                }
                 break;
         }
+    }
+
+    private void intentData(int image, int txt) {
+        intent = new Intent("android.intent.guide");
+        intent.putExtra("imageGuide", image);
+        intent.putExtra("txtGuide", txt);
     }
 }

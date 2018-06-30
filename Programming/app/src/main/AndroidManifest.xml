@@ -25,21 +25,27 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".CNetActivity">
+        <activity
+            android:name=".CNetActivity"
+            android:label="C# / Net">
             <intent-filter>
                 <action android:name="android.intent.CNet" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".WebActivity">
+        <activity
+            android:name=".WebActivity"
+            android:label="Web">
             <intent-filter>
                 <action android:name="android.intent.WEB" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".GuideActivity">
+        <activity
+            android:name=".GuideActivity"
+            android:label="Guide">
             <intent-filter>
                 <action android:name="android.intent.guide" />
 
